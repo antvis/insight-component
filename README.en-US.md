@@ -1,16 +1,16 @@
-<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> [English](./README.en-US.md) | 简体中文
+<img src="https://gw.alipayobjects.com/zos/antfincdn/R8sN%24GNdh6/language.svg" width="18"> English | [简体中文](./README.md)
 
 # insight-component
 
 Components for GI & LI
 
-## 📦 安装
+## 📦 Installation
 
 ```bash
 $ npm install antd @ant-design/icons @antv/insight-component
 ```
 
-## 🔨 使用
+## 🔨 Usage
 
 ```tsx
 import React from 'react';
@@ -22,7 +22,7 @@ export default () => {
 };
 ```
 
-## 本地开发
+## Local Development
 
 ```bash
 # Install project dependencies
@@ -38,6 +38,6 @@ $ npm run ci
 $ npm run build
 ```
 
-## 许可证
+## License
 
 MIT@[AntV](https://github.com/antvis).
