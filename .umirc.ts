@@ -40,11 +40,11 @@ export default defineConfig({
     antd: 'window.antd',
     lodash: '_',
   },
-  styles: ['https://gw.alipayobjects.com/os/lib/antd/4.22.2/dist/antd.css'],
+  styles: ['https://gw.alipayobjects.com/os/lib/antd/4.23.6/dist/antd.css'],
   scripts: [
-    'https://gw.alipayobjects.com/os/lib/react/17.0.1/umd/react.development.js',
-    'https://gw.alipayobjects.com/os/lib/react-dom/17.0.1/umd/react-dom.development.js',
-    'https://gw.alipayobjects.com/os/lib/antd/4.22.2/dist/antd.js',
+    'https://gw.alipayobjects.com/os/lib/react/17.0.2/umd/react.development.js',
+    'https://gw.alipayobjects.com/os/lib/react-dom/17.0.2/umd/react-dom.development.js',
+    'https://gw.alipayobjects.com/os/lib/antd/4.23.6/dist/antd.js',
     /** lodash */
     'https://gw.alipayobjects.com/os/lib/lodash/4.17.20/lodash.min.js',
   ],

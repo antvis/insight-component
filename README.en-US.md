@@ -7,7 +7,11 @@ Components for GI & LI
 ## 📦 Installation
 
 ```bash
-$ npm install antd @ant-design/icons @formily/core @formily/react @formily/antd @antv/insight-component
+# Install pre dependencies
+$ npm install antd @ant-design/icons @formily/core @formily/react @formily/antd
+
+# Install component
+$ npm install @antv/insight-component
 ```
 
 ## 🔨 Usage
