@@ -6,9 +6,11 @@
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
+  "unpkg": "dist/insight-component.min.js",
   "files": [
     "lib",
-    "es"
+    "es",
+    "dist"
   ],
   "scripts": {
     "prepare": "husky install",
@@ -22,12 +24,13 @@
     "test-cover": "jest --coverage",
     "clean": "rimraf dist",
     "size": "limit-size",
-    "build": "father-build",
+    "build": "father build",
+    "doctor": "father doctor",
     "docs:build": "dumi build",
     "docs:build-analyze": "ANALYZE=1 dumi build",
     "docs:deploy": "gh-pages -d docs-dist",
     "deploy": "npm run docs:build && npm run docs:deploy",
-    "ci": "run-s lint build",
+    "ci": "run-s lint doctor build size",
     "prepublishOnly": "npm run ci",
     "version": "node scripts/sync-version"
   },
@@ -48,12 +51,12 @@
     "@commitlint/config-conventional": "^17.0.0",
     "@types/jest": "^26.0.24",
     "@types/lodash-es": "^4.17.6",
-    "@umijs/fabric": "^2.10.2",
+    "@umijs/fabric": "^3.0.0",
     "antd": "^4.22.3",
     "dumi": "^1.1.40",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.26.0",
-    "father-build": "^1.22.5",
+    "father": "^4.0.7",
     "gh-pages": "^4.0.0",
     "husky": "^8.0.1",
     "jest": "^26.6.3",
@@ -62,11 +65,12 @@
     "lint-staged": "^12.4.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.6",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "webpack-bundle-analyzer": "^4.6.1"
   },
   "peerDependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -87,7 +91,7 @@
   "limit-size": [
     {
       "path": "dist/insight-component.min.js",
-      "limit": "100 Kb"
+      "limit": "200 Kb"
     }
   ],
   "keywords": [

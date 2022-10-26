@@ -7,13 +7,12 @@ Components for GI & LI
 ## 📦 安装
 
 ```bash
-$ npm install antd @ant-design/icons @antv/insight-component
+$ npm install antd @ant-design/icons @formily/core @formily/react @formily/antd @antv/insight-component
 ```
 
 ## 🔨 使用
 
 ```tsx
-import React from 'react';
 import { ColorPicker } from '@antv/insight-component';
 import 'antd/dist/antd.css';
 
