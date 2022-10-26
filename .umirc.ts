@@ -40,21 +40,11 @@ export default defineConfig({
     antd: 'window.antd',
     lodash: '_',
   },
-  // 重置浏览器默认样式，后续可加到 @antv/dumi-theme-antv 里
-  styles: [
-    `
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    a { text-decoration: none; }
-    `,
-  ],
-  links: [
-    'https://gw.alipayobjects.com/os/lib/antd/4.22.2/dist/antd.css',
-    'https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.2/mapbox-gl.css',
-  ],
+  styles: ['https://gw.alipayobjects.com/os/lib/antd/4.23.6/dist/antd.css'],
   scripts: [
-    'https://gw.alipayobjects.com/os/lib/react/17.0.1/umd/react.development.js',
-    'https://gw.alipayobjects.com/os/lib/react-dom/17.0.1/umd/react-dom.development.js',
-    'https://gw.alipayobjects.com/os/lib/antd/4.22.2/dist/antd.js',
+    'https://gw.alipayobjects.com/os/lib/react/17.0.2/umd/react.development.js',
+    'https://gw.alipayobjects.com/os/lib/react-dom/17.0.2/umd/react-dom.development.js',
+    'https://gw.alipayobjects.com/os/lib/antd/4.23.6/dist/antd.js',
     /** lodash */
     'https://gw.alipayobjects.com/os/lib/lodash/4.17.20/lodash.min.js',
   ],

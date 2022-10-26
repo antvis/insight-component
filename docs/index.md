@@ -6,18 +6,22 @@ order: 0
 ## 📦 安装
 
 ```bash
-$ npm install antd @ant-design/icons @antv/insight-component
+# Install pre dependencies
+$ npm install antd @ant-design/icons @formily/core @formily/react @formily/antd
+
+# Install component
+$ npm install @antv/insight-component
 ```
 
 ## 🔨 使用
 
 ```tsx | pre
-import React from 'react';
+import { ColorPicker, RibbonSelect } from '@antv/insight-component';
+import { Form, FormItem } from '@formily/antd';
 import { createForm, onFormValuesChange } from '@formily/core';
 import { createSchemaField } from '@formily/react';
-import { Form, FormItem } from '@formily/antd';
-import { ColorPicker, RibbonSelect } from '@antv/insight-component';
 import 'antd/dist/antd.css';
+import React from 'react';
 
 const form = createForm({
   initialValues: {
