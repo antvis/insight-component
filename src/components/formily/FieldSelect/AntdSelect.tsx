@@ -19,7 +19,7 @@ const AntdSelect: React.FC<SelectProps<string, FieldSelectOptionType>> = (props)
               <Tag color={item.typeColor}>{isUndefined(item.typeName) ? item.type : item.typeName}</Tag>
             )}
 
-            {item.lable}
+            {item.label}
           </Select.Option>
         );
       })}

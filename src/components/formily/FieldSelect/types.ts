@@ -8,9 +8,9 @@ export type FieldSelectOptionType = {
    */
   value: string;
   /**
-   * lable
+   * label
    */
-  lable: string;
+  label: string;
   /**
    * 数据类型
    */
