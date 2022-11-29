@@ -28,8 +28,13 @@
   }
 
   &__color-picker {
+    background-color: inherit !important;
+
     input {
-      color: rgb(34, 34, 34) !important;
+      background-color: initial !important;
+    }
+    label {
+      color: @text-color !important;
     }
   }
 }
