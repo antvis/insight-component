@@ -33,15 +33,14 @@
 
     input {
       background-color: initial;
-      border: @border-width-base @border-style-base @border-color-base !important;
-      box-shadow: none !important;
+      box-shadow: @border-color-split 0px 0px 0px @border-width-base inset !important;
     }
 
     label {
       color: inherit !important;
     }
     .flexbox-fix:last-child {
-      border-top: @border-color-split !important;
+      border-top: @border-color-split @border-style-base @border-width-base !important;
     }
   }
 }
