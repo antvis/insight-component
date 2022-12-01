@@ -31,11 +31,17 @@
     background-color: initial !important;
 
     input {
-      background-color: initial !important;
+      color: @text-color;
+      background-color: initial;
+      border: @border-width-base @border-style-base @border-color-base !important;
+      box-shadow: none !important;
     }
 
     label {
       color: @text-color !important;
+    }
+    .flexbox-fix:last-child {
+      border-top: @border-width-base @border-style-base @border-color-base !important;
     }
   }
 }
