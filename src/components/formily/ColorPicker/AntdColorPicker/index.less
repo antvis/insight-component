@@ -26,4 +26,21 @@
       padding: 0;
     }
   }
+
+  &__color-picker {
+    color: @text-color-secondary;
+    background-color: initial !important;
+
+    input {
+      background-color: initial;
+      box-shadow: @border-color-split 0px 0px 0px @border-width-base inset !important;
+    }
+
+    label {
+      color: inherit !important;
+    }
+    .flexbox-fix:last-child {
+      border-top: @border-color-split @border-style-base @border-width-base !important;
+    }
+  }
 }

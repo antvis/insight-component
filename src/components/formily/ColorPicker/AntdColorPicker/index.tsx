@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
-import { Popover } from 'antd';
-import { SketchPicker } from 'react-color';
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
+import { Popover } from 'antd';
+import React, { useCallback } from 'react';
+import { SketchPicker } from 'react-color';
 import './index.less';
 
 export interface AntdColorPickerProps {
@@ -52,6 +52,7 @@ const AntdColorPicker = React.memo((props: AntdColorPickerProps) => {
         overlayClassName={`${prefixCls}__popover`}
         content={
           <SketchPicker
+            className={`${prefixCls}__color-picker`}
             color={value ? value : Preset_Colors[0]}
             disableAlpha
             onChange={onChangeComplete}
