@@ -28,20 +28,20 @@
   }
 
   &__color-picker {
+    color: @text-color-secondary;
     background-color: initial !important;
 
     input {
-      color: @text-color-secondary;
       background-color: initial;
       border: @border-width-base @border-style-base @border-color-base !important;
       box-shadow: none !important;
     }
 
     label {
-      color: @text-color-secondary !important;
+      color: inherit !important;
     }
     .flexbox-fix:last-child {
-      border-top: @border-width-base @border-style-base @border-color-base !important;
+      border-top: @border-color-split !important;
     }
   }
 }
