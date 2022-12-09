@@ -2,7 +2,11 @@ import colorbrewer from 'colorbrewer';
 
 export type ColorRange = {
   name?: string;
-  type?: 'sequential' | 'singlehue' | 'qualitative' | 'diverging';
+  /**
+   * 色带类型
+   * 连续 ｜ 分类 ｜ 发散 ｜ 单色
+   */
+  type?: 'sequential' | 'qualitative' | 'diverging' | 'singlehue';
   category?: string;
   colors: string[];
 };
