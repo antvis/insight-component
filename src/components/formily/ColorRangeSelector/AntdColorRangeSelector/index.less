@@ -19,8 +19,30 @@
   }
   &__palette-config-panel {
     max-height: 400px;
-    overflow-y: auto;
+    overflow-y: overlay;
     border: @border-width-base @border-style-base @border-color-base;
     border-top: 0;
+  }
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    appearance: none;
+  }
+
+  /* 滚动条的滑块按钮 */
+  ::-webkit-scrollbar-thumb {
+    background: @border-color-split;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @border-color-base;
+    }
+  }
+
+  /* 滚动条的轨道 */
+  ::-webkit-scrollbar-track {
+    background: none;
+    border-radius: 0;
   }
 }
