@@ -1,0 +1,18 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-color-palette-group';
+
+.@{slider-prefix-cls} {
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    padding: 12px;
+    cursor: pointer;
+  }
+  &__item:hover {
+    background: @item-hover-bg;
+  }
+}

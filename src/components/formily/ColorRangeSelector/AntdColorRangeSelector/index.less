@@ -1,0 +1,26 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-color-range-selector';
+
+.@{slider-prefix-cls} {
+  background: @popover-background;
+  &__selection-item {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 12px;
+    border: @border-width-base @border-style-base @border-color-base;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  &__selection-item:hover {
+    background: @item-hover-bg;
+  }
+  &__palette-config-panel {
+    max-height: 400px;
+    overflow-y: auto;
+    border: @border-width-base @border-style-base @border-color-base;
+    border-top: 0;
+  }
+}
