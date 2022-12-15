@@ -4,7 +4,6 @@
 @slider-prefix-cls: ~'@{ant-prefix}-formily-color-range-selector';
 
 .@{slider-prefix-cls} {
-  background: @popover-background;
   &__selection-item {
     display: flex;
     align-items: center;
@@ -14,35 +13,50 @@
     border-radius: 2px;
     cursor: pointer;
   }
+
   &__selection-item:hover {
     background: @item-hover-bg;
   }
+
   &__palette-config-panel {
-    max-height: 400px;
-    overflow-y: overlay;
-    border: @border-width-base @border-style-base @border-color-base;
-    border-top: 0;
-  }
-  ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-    appearance: none;
-  }
+    .@{ant-prefix}-popover-content {
+      border: @border-width-base @border-style-base @border-color-base;
 
-  /* 滚动条的滑块按钮 */
-  ::-webkit-scrollbar-thumb {
-    background: @border-color-split;
-    border-radius: 3px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: @border-color-base;
+      .@{ant-prefix}-popover-inner {
+        .@{ant-prefix}-popover-inner-content {
+          padding: 12px 0 !important;
+        }
+      }
     }
-  }
 
-  /* 滚动条的轨道 */
-  ::-webkit-scrollbar-track {
-    background: none;
-    border-radius: 0;
+    &-content {
+      max-height: 400px;
+      padding: 0 16px;
+      overflow-y: overlay;
+      border-top: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+      appearance: none;
+    }
+
+    /* 滚动条的滑块按钮 */
+    ::-webkit-scrollbar-thumb {
+      background: @border-color-split;
+      border-radius: 3px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: @border-color-base;
+      }
+    }
+
+    /* 滚动条的轨道 */
+    ::-webkit-scrollbar-track {
+      background: none;
+      border-radius: 0;
+    }
   }
 }
