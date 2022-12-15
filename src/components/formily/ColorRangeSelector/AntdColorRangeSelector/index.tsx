@@ -1,6 +1,6 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
 import { Popover } from 'antd';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
 import type { ColorRange } from './constants/color-ranges';
 import { COLOR_RANGES } from './constants/color-ranges';
@@ -25,38 +25,57 @@ export interface AntdColorRangeSelectorProps {
 
 const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
+  const ribbons = props.options && props.options.length ? props.options : COLOR_RANGES;
 
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
     steps: number;
     reversed: boolean;
   }>({
-    type: 'sequential',
-    steps: 9,
+    type: 'all',
+    steps: 6,
     reversed: false,
   });
 
-  //  选中筛选数据
+  useEffect(() => {
+    if (props.value) {
+      setPaletteConfig((pre) => ({ ...pre, steps: props.value.length }));
+    }
+  }, [props.value]);
+
   const updatePelrtteConfig = (change: Record<string | number, any>) => {
     setPaletteConfig((pre) => ({ ...pre, ...change }));
   };
 
-  // 显示颜色列表
+  // 颜色列表
   const ribbonList = useMemo(() => {
-    const ribbons = props.options && props.options.length ? props.options : COLOR_RANGES;
+    if (paletteConfig.type === 'all') {
+      return ribbons
+        .filter((item) => item.colors?.length === paletteConfig.steps)
+        .map((item) => (paletteConfig.reversed ? item.colors.reverse() : item.colors));
+    }
     return ribbons
       .filter((item) => item.colors?.length === paletteConfig.steps && item.type === paletteConfig.type)
-      .map((item) => item.colors.reverse());
-  }, [props.options, paletteConfig]);
+      .map((item) => (paletteConfig.reversed ? item.colors.reverse() : item.colors));
+  }, [ribbons, paletteConfig.steps, paletteConfig.type, paletteConfig.reversed]);
 
-  // 颜色数量
+  // 数量
   const ribbonStepOptions = useMemo(() => {
     const ribbonSteps: number[] = [];
-    COLOR_RANGES.filter((item) => item.type === paletteConfig.type).map((item) => {
-      ribbonSteps.push(item.colors.length);
-    });
+    if (paletteConfig.type === 'all') {
+      ribbons.map((item) => {
+        ribbonSteps.push(item.colors.length);
+      });
+    } else {
+      ribbons
+        .filter((item) => item.type === paletteConfig.type)
+        .map((item) => {
+          ribbonSteps.push(item.colors.length);
+        });
+    }
+
     return [...new Set(ribbonSteps)].map((item) => ({ value: item, label: item }));
-  }, [paletteConfig.type]);
+  }, [paletteConfig.type, ribbons]);
 
   // 配置项 list
   const paletteConfigList: PaletteConfigProps[] = useMemo(() => {
@@ -68,6 +87,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         value: paletteConfig.type,
         config: {
           options: [
+            { value: 'all', label: 'all' },
             { value: 'sequential', label: 'sequential' },
             { value: 'singlehue', label: 'singlehue' },
             { value: 'qualitative', label: 'qualitative' },
@@ -110,6 +130,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
 
           <ColorPaletteGroup
             colorList={ribbonList}
+            selectedValue={props.value}
             onClick={(value) => {
               props?.onChange(value);
             }}

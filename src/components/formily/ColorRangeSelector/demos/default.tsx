@@ -77,7 +77,7 @@ const schema = {
       'x-component': 'ColorRangeSelector',
       'x-component-props': {},
       'x-decorator-props': {},
-      enum: [...RIBBON_LIST],
+      // enum: [...RIBBON_LIST],
     },
   },
 };
