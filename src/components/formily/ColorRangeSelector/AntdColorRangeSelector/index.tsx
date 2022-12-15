@@ -2,6 +2,7 @@ import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls'
 import { Popover } from 'antd';
 import React, { useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
+import type { ColorRange } from './constants/color-ranges';
 import { COLOR_RANGES } from './constants/color-ranges';
 import './index.less';
 import type { PaletteConfigProps } from './PaletteConfig';
@@ -12,6 +13,10 @@ export interface AntdColorRangeSelectorProps {
    * 颜色值
    */
   value?: string[];
+  /**
+   * colorList
+   */
+  options?: ColorRange[];
   /**
    * 选择发生改变时
    */
@@ -32,16 +37,17 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   });
 
   //  选中筛选数据
-  const updatePelrtteConfig = (change: Record<string, any>) => {
+  const updatePelrtteConfig = (change: Record<string | number, any>) => {
     setPaletteConfig((pre) => ({ ...pre, ...change }));
   };
 
   // 显示颜色列表
   const ribbonList = useMemo(() => {
-    return COLOR_RANGES.filter(
-      (item) => item.colors.length === paletteConfig.steps && item.type === paletteConfig.type,
-    ).map((item) => item.colors.reverse());
-  }, [props.value, paletteConfig]);
+    const ribbons = props.options && props.options.length ? props.options : COLOR_RANGES;
+    return ribbons
+      .filter((item) => item.colors?.length === paletteConfig.steps && item.type === paletteConfig.type)
+      .map((item) => item.colors.reverse());
+  }, [props.options, paletteConfig]);
 
   // 颜色数量
   const ribbonStepOptions = useMemo(() => {
@@ -89,7 +95,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         onChange: updatePelrtteConfig,
       },
     ];
-  }, [ribbonStepOptions]);
+  }, [ribbonStepOptions, paletteConfig.steps]);
 
   return (
     <Popover
