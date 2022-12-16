@@ -6,12 +6,13 @@ import './index.less';
 export type ColorPaletteGroupProps = {
   colorList: Record<string, any>[];
   selectedValue: string[];
+  isReversed: boolean;
   onClick: (color: string[]) => void;
 };
 
 const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
   const prefixCls = usePrefixCls('formily-color-palette-group');
-  const { colorList = [], selectedValue = [], onClick } = props;
+  const { colorList = [], selectedValue = [], isReversed = false, onClick } = props;
 
   const ColorPaletteGroupItem = ({ color }) => {
     return (
@@ -22,14 +23,10 @@ const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
         )}
         onClick={() => onClick(color)}
       >
-        {(color || []).map((colorItem: string) => (
+        {(isReversed ? color.reverse() : color || []).map((colorItem: string, index) => (
           <span
-            key={colorItem}
-            style={{
-              backgroundColor: colorItem,
-              height: '22px',
-              width: `${100 / color.length}%`,
-            }}
+            key={`${colorItem}-${index}`}
+            style={{ backgroundColor: String(colorItem), height: '22px', width: `${100 / colorItem.length}%` }}
           />
         ))}
       </div>
