@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import './index.less';
 
 export type ColorPaletteGroupProps = {
-  colorList: Record<string, any>[];
+  colorList: string[][];
   selectedValue: string[];
   isReversed: boolean;
   onChange: (color: string[]) => void;

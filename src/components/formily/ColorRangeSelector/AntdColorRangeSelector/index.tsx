@@ -75,7 +75,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const ribbonStepOptions = useMemo(() => {
     const ribbonSteps: number[] = [];
     if (paletteConfig.type === 'all') {
-      ribbons.map((item) => {
+      ribbons.forEach((item) => {
         ribbonSteps.push(item.colors.length);
       });
     } else {
@@ -99,11 +99,11 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         value: paletteConfig.type,
         config: {
           options: [
-            { value: 'all', label: 'all' },
-            { value: 'sequential', label: 'sequential' },
-            { value: 'singlehue', label: 'singlehue' },
-            { value: 'qualitative', label: 'qualitative' },
-            { value: 'diverging', label: 'diverging' },
+            { value: 'all', label: '全部' },
+            { value: 'sequential', label: '连续型' },
+            { value: 'singlehue', label: '纯色渐变' },
+            { value: 'qualitative', label: '定性的' },
+            { value: 'diverging', label: '离散型' },
           ],
         },
         onChange: onTypeChange,
@@ -152,19 +152,18 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       }
     >
       <div className={`${prefixCls}__selection-item`}>
-        {(props.value.isReversed
-          ? cloneDeep(selectedValue.colors).reverse()
-          : cloneDeep(selectedValue.colors) || []
-        ).map((color, index) => (
-          <span
-            key={`${color}-${index}-selected`}
-            style={{
-              backgroundColor: String(color),
-              height: '22px',
-              width: `${100 / selectedValue.colors.length}%`,
-            }}
-          />
-        ))}
+        {(props.value.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors.slice() || []).map(
+          (color, index) => (
+            <span
+              key={`${color}-${index}-selected`}
+              style={{
+                backgroundColor: String(color),
+                height: '22px',
+                width: `${100 / selectedValue.colors.length}%`,
+              }}
+            />
+          ),
+        )}
       </div>
     </Popover>
   );
