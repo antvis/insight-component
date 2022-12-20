@@ -1,6 +1,6 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
 import { Popover } from 'antd';
-import { isEmpty } from 'lodash-es';
+import { cloneDeep } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
 import type { ColorRange } from './constants/color-ranges';
@@ -11,7 +11,7 @@ import PaletteConfigs from './PaletteConfig';
 
 export type valueProps = {
   colors: string[];
-  isReversed: boolean;
+  isReversed?: boolean;
 };
 
 export interface AntdColorRangeSelectorProps {
@@ -31,27 +31,31 @@ export interface AntdColorRangeSelectorProps {
 
 const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
-  const [selectionColor, setSelectionColor] = useState<valueProps>({ isReversed: false, colors: [] });
   const ribbons = props.options && props.options.length ? props.options : COLOR_RANGES;
+  const [selectedValue, setSelectValue] = useState(props.value);
+
+  useEffect(() => {
+    props.onChange(selectedValue);
+  }, [selectedValue]);
 
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
     steps: number;
   }>({
     type: 'all',
-    steps: 6,
+    steps: selectedValue.colors.length ?? 0,
   });
 
-  useEffect(() => {
-    const { colors = [], isReversed = false } = props.value;
-    setSelectionColor({ colors, isReversed });
-    if (!isEmpty(colors)) {
-      setPaletteConfig((pre) => ({ ...pre, steps: colors.length, reversed: isReversed }));
-    }
-  }, [props.value]);
+  const onTypeChange = (type: Record<string | number, any>) => {
+    setPaletteConfig((pre) => ({ ...pre, ...type }));
+  };
 
-  const updatePelrtteConfig = (change: Record<string | number, any>) => {
-    setPaletteConfig((pre) => ({ ...pre, ...change }));
+  const onStepsChange = (steps: Record<string | number, any>) => {
+    setPaletteConfig((pre) => ({ ...pre, ...steps }));
+  };
+
+  const onIsReversedChange = ({ isReversed }) => {
+    setSelectValue((pre) => ({ ...pre, isReversed }));
   };
 
   // 颜色列表
@@ -102,7 +106,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
             { value: 'diverging', label: 'diverging' },
           ],
         },
-        onChange: updatePelrtteConfig,
+        onChange: onTypeChange,
       },
       {
         id: 'steps',
@@ -112,20 +116,18 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         config: {
           options: ribbonStepOptions,
         },
-        onChange: updatePelrtteConfig,
+        onChange: onStepsChange,
       },
       {
         id: 'isReversed',
         label: '反转',
         type: 'switch',
-        value: selectionColor.isReversed,
+        value: props.value.isReversed,
         config: {},
-        onChange: ({ isReversed }) => {
-          setSelectionColor((pre) => ({ ...pre, isReversed: isReversed }));
-        },
+        onChange: onIsReversedChange,
       },
     ];
-  }, [ribbonStepOptions, paletteConfig.steps, selectionColor]);
+  }, [ribbonStepOptions, paletteConfig.steps, props.value.isReversed]);
 
   return (
     <Popover
@@ -139,29 +141,30 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
           ))}
 
           <ColorPaletteGroup
-            colorList={[...ribbonList]}
-            selectedValue={selectionColor.colors}
-            isReversed={selectionColor.isReversed}
-            onClick={(value) => {
-              setSelectionColor((pre) => ({ ...pre, colors: value }));
+            colorList={cloneDeep(ribbonList)}
+            selectedValue={selectedValue.colors}
+            isReversed={selectedValue.isReversed}
+            onChange={(value) => {
+              setSelectValue((pre) => ({ ...pre, colors: value }));
             }}
           />
         </div>
       }
     >
       <div className={`${prefixCls}__selection-item`}>
-        {(selectionColor.isReversed ? selectionColor.colors.reverse() : selectionColor.colors || []).map(
-          (color, index) => (
-            <span
-              key={`${color}-${index}-selected`}
-              style={{
-                backgroundColor: String(color),
-                height: '22px',
-                width: `${100 / selectionColor.colors.length}%`,
-              }}
-            />
-          ),
-        )}
+        {(props.value.isReversed
+          ? cloneDeep(selectedValue.colors).reverse()
+          : cloneDeep(selectedValue.colors) || []
+        ).map((color, index) => (
+          <span
+            key={`${color}-${index}-selected`}
+            style={{
+              backgroundColor: String(color),
+              height: '22px',
+              width: `${100 / selectedValue.colors.length}%`,
+            }}
+          />
+        ))}
       </div>
     </Popover>
   );

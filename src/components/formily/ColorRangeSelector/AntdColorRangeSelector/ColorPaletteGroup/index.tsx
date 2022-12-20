@@ -1,18 +1,24 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
 import classnames from 'classnames';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './index.less';
 
 export type ColorPaletteGroupProps = {
   colorList: Record<string, any>[];
   selectedValue: string[];
   isReversed: boolean;
-  onClick: (color: string[]) => void;
+  onChange: (color: string[]) => void;
 };
 
 const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
   const prefixCls = usePrefixCls('formily-color-palette-group');
-  const { colorList = [], selectedValue = [], isReversed = false, onClick } = props;
+  const { colorList = [], selectedValue = [], isReversed = false, onChange } = props;
+
+  useEffect(() => {
+    if (colorList[0] && selectedValue.length !== colorList[0].length) {
+      isReversed ? onChange(colorList[0].reverse()) : onChange(colorList[0] as string[]);
+    }
+  }, [selectedValue, colorList]);
 
   const ColorPaletteGroupItem = ({ color }) => {
     return (
@@ -21,12 +27,12 @@ const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
           `${prefixCls}__item`,
           color.toString() === selectedValue.toString() ? `${prefixCls}__item-selected` : '',
         )}
-        onClick={() => onClick(color)}
+        onClick={() => (isReversed ? onChange(color.reverse()) : onChange(color))}
       >
         {(isReversed ? color.reverse() : color || []).map((colorItem: string, index) => (
           <span
             key={`${colorItem}-${index}`}
-            style={{ backgroundColor: String(colorItem), height: '22px', width: `${100 / colorItem.length}%` }}
+            style={{ backgroundColor: String(colorItem), height: '22px', width: `${100 / color.length}%` }}
           />
         ))}
       </div>

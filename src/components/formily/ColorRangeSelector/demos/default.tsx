@@ -1,5 +1,4 @@
 import { ColorRangeSelector } from '@antv/insight-component';
-import type { ColorRange } from '@antv/insight-component/src/components/formily/ColorRangeSelector/AntdColorRangeSelector/constants/color-ranges';
 import { Form, FormItem } from '@formily/antd';
 import type { Form as FormInstance } from '@formily/core';
 import { createForm, onFormValuesChange } from '@formily/core';
@@ -7,58 +6,16 @@ import { createSchemaField, FormConsumer } from '@formily/react';
 import 'antd/dist/antd.css';
 import React from 'react';
 
-const RIBBON_LIST: ColorRange[] = [
-  {
-    type: 'sequential',
-    colors: [
-      'rgb(247, 251, 255)',
-      'rgb(222, 235, 247)',
-      'rgb(198, 219, 239)',
-      'rgb(158, 202, 225)',
-      'rgb(107, 174, 214)',
-      'rgb(66, 146, 198)',
-      'rgb(33, 113, 181)',
-      'rgb(8, 81, 156)',
-      'rgb(8, 48, 107)',
-    ],
-  },
-
-  {
-    type: 'singlehue',
-    colors: [
-      'rgb(247, 252, 253)',
-      'rgb(229, 245, 249)',
-      'rgb(204, 236, 230)',
-      'rgb(153, 216, 201)',
-      'rgb(102, 194, 164)',
-      'rgb(65, 174, 118)',
-      'rgb(35, 139, 69)',
-      'rgb(0, 109, 44)',
-      'rgb(0, 68, 27)',
-    ],
-  },
-];
-
 const form = createForm({
   initialValues: {
     colorRibbon: {
-      colors: [
-        'rgb(247, 251, 255)',
-        'rgb(222, 235, 247)',
-        'rgb(198, 219, 239)',
-        'rgb(158, 202, 225)',
-        'rgb(107, 174, 214)',
-        'rgb(66, 146, 198)',
-        'rgb(33, 113, 181)',
-        'rgb(8, 81, 156)',
-        'rgb(8, 48, 107)',
-      ],
+      colors: ['#ffffe5', '#f7fcb9', '#d9f0a3', '#addd8e', '#78c679', '#41ab5d', '#238443', '#006837', '#004529'],
       isReversed: false,
     },
   },
   effects() {
     onFormValuesChange((formIns: FormInstance<any>) => {
-      console.log('formIns.values: ', formIns.values);
+      console.log('formIns.values: ', formIns.values.colorRibbon);
     });
   },
 });
@@ -80,7 +37,6 @@ const schema = {
       'x-component': 'ColorRangeSelector',
       'x-component-props': {},
       'x-decorator-props': {},
-      // enum: [...RIBBON_LIST],
     },
   },
 };
