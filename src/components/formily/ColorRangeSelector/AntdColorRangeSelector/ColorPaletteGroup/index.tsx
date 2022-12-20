@@ -16,7 +16,11 @@ const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
 
   useEffect(() => {
     if (colorList[0] && selectedValue.length !== colorList[0].length) {
-      isReversed ? onChange(colorList[0].reverse()) : onChange(colorList[0] as string[]);
+      if (isReversed) {
+        onChange(colorList[0].reverse());
+      } else {
+        onChange(colorList[0] as string[]);
+      }
     }
   }, [selectedValue, colorList]);
 
