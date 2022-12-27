@@ -11,12 +11,18 @@
     height: 40px;
     padding: 0 5px;
     cursor: pointer;
+
+    span {
+      height: 22px;
+    }
+
     &-selected {
       background-color: @item-hover-bg;
       border: @border-width-base @border-style-base @border-color-base;
       border-radius: 2px;
     }
   }
+
   &__item:hover {
     background: @item-hover-bg;
   }

@@ -1,8 +1,8 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
 import { Popover } from 'antd';
-import { cloneDeep } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
+import { DEFAULT_VALUE, getColorGroupByName } from './constants';
 import type { ColorRange } from './constants/color-ranges';
 import { COLOR_RANGES } from './constants/color-ranges';
 import './index.less';
@@ -31,13 +31,9 @@ export interface AntdColorRangeSelectorProps {
 
 const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
-  const ribbons = props.options && props.options.length ? props.options : COLOR_RANGES;
-  const [selectedValue, setSelectValue] = useState(props.value);
-
-  useEffect(() => {
-    props.onChange(selectedValue);
-  }, [selectedValue]);
-
+  const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
+  const [selectedValue, setSelectValue] = useState(props.value ?? DEFAULT_VALUE);
+  const [rangeName, setRangeName] = useState('');
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
     steps: number;
@@ -55,39 +51,48 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   };
 
   const onIsReversedChange = ({ isReversed }) => {
-    setSelectValue((pre) => ({ ...pre, isReversed }));
+    setSelectValue((pre) => ({
+      ...pre,
+      isReversed,
+      colors: pre.colors.slice().reverse(),
+    }));
+  };
+
+  const onSelectValueChange = (color: string[]) => {
+    setSelectValue((pre) => ({ ...pre, colors: pre.isReversed ? color.slice().reverse() : color }));
   };
 
   // 颜色列表
-  const ribbonList = useMemo(() => {
+  const colorRangeList = useMemo(() => {
     let list = [];
 
-    list = ribbons.filter((item) => item.colors?.length === paletteConfig.steps);
+    list = colorRanges.filter((item) => item.colors?.length === paletteConfig.steps);
 
     if (paletteConfig.type !== 'all') {
       list = list.filter((item) => item.type === paletteConfig.type);
     }
 
-    return list.map((item) => item.colors);
-  }, [ribbons, paletteConfig]);
+    return list;
+  }, [colorRanges, paletteConfig]);
 
   // 数量
-  const ribbonStepOptions = useMemo(() => {
-    const ribbonSteps: number[] = [];
+  const colorRangeStepOptions = useMemo(() => {
+    const rangeSteps: number[] = [];
+
     if (paletteConfig.type === 'all') {
-      ribbons.forEach((item) => {
-        ribbonSteps.push(item.colors.length);
+      colorRanges.forEach((item) => {
+        rangeSteps.push(item.colors.length);
       });
     } else {
-      ribbons
+      colorRanges
         .filter((item) => item.type === paletteConfig.type)
         .map((item) => {
-          ribbonSteps.push(item.colors.length);
+          rangeSteps.push(item.colors.length);
         });
     }
 
-    return [...new Set(ribbonSteps)].map((item) => ({ value: item, label: item }));
-  }, [paletteConfig.type, ribbons]);
+    return [...new Set(rangeSteps)].map((item) => ({ value: item, label: item }));
+  }, [paletteConfig.type, colorRanges]);
 
   // 配置项 list
   const paletteConfigList: PaletteConfigProps[] = useMemo(() => {
@@ -114,7 +119,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         type: 'select',
         value: paletteConfig.steps,
         config: {
-          options: ribbonStepOptions,
+          options: colorRangeStepOptions,
         },
         onChange: onStepsChange,
       },
@@ -122,12 +127,39 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         id: 'isReversed',
         label: '反转',
         type: 'switch',
-        value: props.value.isReversed,
+        value: selectedValue.isReversed,
         config: {},
         onChange: onIsReversedChange,
       },
     ];
-  }, [ribbonStepOptions, paletteConfig.steps, props.value.isReversed]);
+  }, [colorRangeStepOptions, paletteConfig.steps]);
+
+  useEffect(() => {
+    if (selectedValue.colors) {
+      const select = selectedValue.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors;
+      const selectRange = colorRangeList.find((item) => item.colors.toString() === select.toString());
+      const name = getColorGroupByName(selectRange);
+      setRangeName(name);
+    }
+  }, [selectedValue.colors]);
+
+  useEffect(() => {
+    if (selectedValue.colors.length !== paletteConfig.steps) {
+      const ranges = colorRangeList.find((item) => getColorGroupByName(item) === rangeName);
+      if (ranges) {
+        setSelectValue((pre) => ({
+          ...pre,
+          colors: pre.isReversed ? ranges.colors.slice().reverse() : ranges.colors,
+        }));
+      }
+    }
+  }, [paletteConfig.steps]);
+
+  useEffect(() => {
+    if (selectedValue) {
+      props.onChange({ ...selectedValue });
+    }
+  }, [selectedValue]);
 
   return (
     <Popover
@@ -141,29 +173,24 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
           ))}
 
           <ColorPaletteGroup
-            colorList={cloneDeep(ribbonList)}
+            colorRange={colorRangeList}
             selectedValue={selectedValue.colors}
             isReversed={selectedValue.isReversed}
-            onChange={(value) => {
-              setSelectValue((pre) => ({ ...pre, colors: value }));
-            }}
+            onChange={(color) => onSelectValueChange(color)}
           />
         </div>
       }
     >
       <div className={`${prefixCls}__selection-item`}>
-        {(props.value.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors.slice() || []).map(
-          (color, index) => (
-            <span
-              key={`${color}-${index}-selected`}
-              style={{
-                backgroundColor: String(color),
-                height: '22px',
-                width: `${100 / selectedValue.colors.length}%`,
-              }}
-            />
-          ),
-        )}
+        {selectedValue.colors.map((color, index) => (
+          <span
+            key={`${color}-${index}-selected`}
+            style={{
+              backgroundColor: color,
+              width: `${100 / selectedValue.colors.length}%`,
+            }}
+          />
+        ))}
       </div>
     </Popover>
   );
