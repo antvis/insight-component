@@ -22,9 +22,15 @@ const PaletteConfig = (props: PaletteConfigProps) => {
 
   return (
     <div className={prefixCls} key={id}>
-      {label}
+      <span className={`${prefixCls}-name`}> {label}</span>
+
       {type === 'select' && (
-        <Select value={defaultValue} options={config.options} onChange={(value) => onChange({ [id]: value })} />
+        <Select
+          className={`${prefixCls}-select`}
+          value={defaultValue}
+          options={config.options}
+          onChange={(value) => onChange({ [id]: value })}
+        />
       )}
       {type === 'switch' && (
         <Switch defaultChecked={defaultValue as boolean} onChange={(value) => onChange({ [id]: value })} />

@@ -23,8 +23,16 @@
   }
 
   &__palette-config-panel {
+    top: 24px !important;
+    left: 42px !important;
+    width: 86%;
+
     .@{ant-prefix}-popover-content {
       border: @border-width-base @border-style-base @border-color-base;
+
+      .@{ant-prefix}-popover-arrow {
+        display: none;
+      }
 
       .@{ant-prefix}-popover-inner {
         .@{ant-prefix}-popover-inner-content {

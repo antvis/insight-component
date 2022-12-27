@@ -165,6 +165,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     <Popover
       trigger="click"
       placement="bottom"
+      className={`${prefixCls}`}
       overlayClassName={`${prefixCls}__palette-config-panel`}
       content={
         <div className={`${prefixCls}__palette-config-panel-content`}>
@@ -180,6 +181,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
           />
         </div>
       }
+      getPopupContainer={(triggerNode) => triggerNode.parentNode}
     >
       <div className={`${prefixCls}__selection-item`}>
         {selectedValue.colors.map((color, index) => (
