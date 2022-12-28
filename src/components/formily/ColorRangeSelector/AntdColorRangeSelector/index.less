@@ -23,9 +23,8 @@
   }
 
   &__palette-config-panel {
-    top: 24px !important;
-    left: 42px !important;
-    width: 86%;
+    top: 40px !important;
+    right: 0 !important;
 
     .@{ant-prefix}-popover-content {
       border: @border-width-base @border-style-base @border-color-base;
@@ -47,5 +46,11 @@
       overflow-y: overlay;
       border-top: 0;
     }
+  }
+}
+
+.@{ant-prefix}-formily-item-control-content-component {
+  .@{ant-prefix}-popover-placement-bottom {
+    padding-top: 0 !important;
   }
 }

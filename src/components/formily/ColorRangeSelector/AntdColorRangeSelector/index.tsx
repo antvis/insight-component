@@ -81,13 +81,13 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
 
     if (paletteConfig.type === 'all') {
       colorRanges.forEach((item) => {
-        rangeSteps.push(item.colors.length);
+        rangeSteps.push(item.colors?.length);
       });
     } else {
       colorRanges
         .filter((item) => item.type === paletteConfig.type)
         .map((item) => {
-          rangeSteps.push(item.colors.length);
+          rangeSteps.push(item.colors?.length);
         });
     }
 
@@ -167,6 +167,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       placement="bottom"
       className={`${prefixCls}`}
       overlayClassName={`${prefixCls}__palette-config-panel`}
+      overlayStyle={{ right: 0, maxWidth: '87%' }}
       content={
         <div className={`${prefixCls}__palette-config-panel-content`}>
           {paletteConfigList.map((item) => (
