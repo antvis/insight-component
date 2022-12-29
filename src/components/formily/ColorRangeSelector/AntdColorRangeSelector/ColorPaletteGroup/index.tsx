@@ -14,8 +14,8 @@ const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
   const prefixCls = usePrefixCls('formily-color-palette-group');
   const { colorRange, selectedValue, isReversed, onChange } = props;
 
-  const ColorPaletteGroupItem = (props) => {
-    const { color, ...prop } = props;
+  const ColorPaletteGroupItem = (item) => {
+    const { color, ...prop } = item;
 
     return (
       <div
