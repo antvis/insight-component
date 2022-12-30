@@ -188,7 +188,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       )}
       value={selectedValue.colors.toString()}
     >
-      {colorRangeList.map((item) => {
+      {colorRanges.map((item) => {
         const colorList = selectedValue.isReversed ? item.colors.slice().reverse() : item.colors;
         return (
           <Select.Option key={colorList.toString()} value={colorList.toString()}>
