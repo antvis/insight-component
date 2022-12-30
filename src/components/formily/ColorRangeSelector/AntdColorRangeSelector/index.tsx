@@ -166,9 +166,15 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     <Select
       className={`${prefixCls}`}
       open={open}
-      onDropdownVisibleChange={(visible) => setOpen(visible)}
+      onDropdownVisibleChange={() => setOpen(true)}
       dropdownRender={() => (
-        <div className={`${prefixCls}__selection-panel-content`}>
+        <div
+          className={`${prefixCls}__selection-panel-content`}
+          onMouseEnter={() => {
+            setOpen(true);
+          }}
+          onMouseLeave={() => setOpen(false)}
+        >
           {paletteConfigList.map((item) => (
             <PaletteConfigs key={item.id} {...item} />
           ))}
