@@ -166,7 +166,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     <Select
       className={`${prefixCls}`}
       open={open}
-      onDropdownVisibleChange={(visible) => setOpen(true)}
+      onDropdownVisibleChange={() => setOpen(true)}
       dropdownRender={() => (
         <div
           className={`${prefixCls}__selection-panel-content`}
