@@ -1,5 +1,5 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
-import { Popover } from 'antd';
+import { Select } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
 import { DEFAULT_VALUE, getColorGroupByName } from './constants';
@@ -34,6 +34,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
   const [selectedValue, setSelectValue] = useState(props.value ?? DEFAULT_VALUE);
   const [rangeName, setRangeName] = useState('');
+  const [open, setOpen] = useState(false);
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
     steps: number;
@@ -162,18 +163,15 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   }, [selectedValue]);
 
   return (
-    <Popover
-      trigger="click"
-      placement="bottom"
+    <Select
       className={`${prefixCls}`}
-      overlayClassName={`${prefixCls}__palette-config-panel`}
-      overlayStyle={{ right: 0, maxWidth: '87%' }}
-      content={
-        <div className={`${prefixCls}__palette-config-panel-content`}>
+      open={open}
+      onDropdownVisibleChange={(visible) => setOpen(visible)}
+      dropdownRender={() => (
+        <div className={`${prefixCls}__selection-panel-content`}>
           {paletteConfigList.map((item) => (
             <PaletteConfigs key={item.id} {...item} />
           ))}
-
           <ColorPaletteGroup
             colorRange={colorRangeList}
             selectedValue={selectedValue.colors}
@@ -181,21 +179,29 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
             onChange={(color) => onSelectValueChange(color)}
           />
         </div>
-      }
-      getPopupContainer={(triggerNode) => triggerNode.parentNode}
+      )}
+      value={selectedValue.colors.toString()}
     >
-      <div className={`${prefixCls}__selection-item`}>
-        {selectedValue.colors.map((color, index) => (
-          <span
-            key={`${color}-${index}-selected`}
-            style={{
-              backgroundColor: color,
-              width: `${100 / selectedValue.colors.length}%`,
-            }}
-          />
-        ))}
-      </div>
-    </Popover>
+      {colorRangeList.map((item) => {
+        const colorList = selectedValue.isReversed ? item.colors.slice().reverse() : item.colors;
+        return (
+          <Select.Option key={colorList.toString()} value={colorList.toString()}>
+            <div className={`${prefixCls}__selection-item`}>
+              {colorList.map((color) => (
+                <span
+                  key={color}
+                  style={{
+                    backgroundColor: color,
+                    height: '22px',
+                    width: `${100 / colorList.length}%`,
+                  }}
+                />
+              ))}
+            </div>
+          </Select.Option>
+        );
+      })}
+    </Select>
   );
 };
 
