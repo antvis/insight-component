@@ -25,7 +25,7 @@ const colorBrewerMap = Object.entries(colorbrewer.schemeGroups).reduce(
   {},
 );
 
-export const COLOR_RANGES: ColorRange[] = Object.entries(colorbrewer)
+export const COLORRANGES: ColorRange[] = Object.entries(colorbrewer)
   .filter(([keyName]) => keyName !== 'schemeGroups')
   .map(([keyName, colorScheme]: [string, Record<string, string[]>]) => {
     return Object.entries(colorScheme).map(([lenKey, colors]) => ({

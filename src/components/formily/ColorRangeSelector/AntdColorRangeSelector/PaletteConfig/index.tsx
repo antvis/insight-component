@@ -22,11 +22,11 @@ const PaletteConfig = (props: PaletteConfigProps) => {
 
   return (
     <div className={prefixCls} key={id}>
-      <span className={`${prefixCls}-name`}> {label}</span>
+      <span className={`${prefixCls}__name`}> {label}</span>
 
       {type === 'select' && (
         <Select
-          className={`${prefixCls}-select`}
+          className={`${prefixCls}__select`}
           value={defaultValue}
           options={config.options}
           onChange={(value) => onChange({ [id]: value })}

@@ -8,14 +8,14 @@ import React from 'react';
 
 const form = createForm({
   initialValues: {
-    colorRibbon: {
+    colorRange: {
       colors: ['#ffffe5', '#f7fcb9', '#d9f0a3', '#addd8e', '#78c679', '#41ab5d', '#238443', '#006837', '#004529'],
       isReversed: false,
     },
   },
   effects() {
     onFormValuesChange((formIns: FormInstance<any>) => {
-      console.log('formIns.values: ', formIns.values.colorRibbon);
+      console.log('formIns.values: ', formIns.values.colorRange);
     });
   },
 });
@@ -30,8 +30,8 @@ const SchemaField = createSchemaField({
 const schema = {
   type: 'object',
   properties: {
-    colorRibbon: {
-      type: 'string',
+    colorRange: {
+      type: 'object',
       title: '颜色',
       'x-decorator': 'FormItem',
       'x-component': 'ColorRangeSelector',

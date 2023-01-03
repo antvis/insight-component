@@ -2,9 +2,9 @@ import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls'
 import { Select } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
-import { DEFAULT_VALUE, getColorGroupByName } from './constants';
+import { DEFAULTVALUE, getColorGroupByName } from './constants';
 import type { ColorRange } from './constants/color-ranges';
-import { COLOR_RANGES } from './constants/color-ranges';
+import { COLORRANGES } from './constants/color-ranges';
 import './index.less';
 import type { PaletteConfigProps } from './PaletteConfig';
 import PaletteConfigs from './PaletteConfig';
@@ -20,7 +20,7 @@ export interface AntdColorRangeSelectorProps {
    */
   value?: valueProps;
   /**
-   * colorList
+   * colorRanges
    */
   options?: ColorRange[];
   /**
@@ -31,9 +31,12 @@ export interface AntdColorRangeSelectorProps {
 
 const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
-  const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
-  const [selectedValue, setSelectValue] = useState(props.value ?? DEFAULT_VALUE);
-  const [rangeName, setRangeName] = useState('');
+  const colorRanges = props.options && props.options.length ? props.options : COLORRANGES;
+
+  const selectedValue = useMemo(() => {
+    return props.value ?? DEFAULTVALUE;
+  }, [props.value]);
+
   const [open, setOpen] = useState(false);
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
@@ -42,26 +45,6 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     type: 'all',
     steps: selectedValue.colors.length ?? 0,
   });
-
-  const onTypeChange = (type: Record<string | number, any>) => {
-    setPaletteConfig((pre) => ({ ...pre, ...type }));
-  };
-
-  const onStepsChange = (steps: Record<string | number, any>) => {
-    setPaletteConfig((pre) => ({ ...pre, ...steps }));
-  };
-
-  const onIsReversedChange = ({ isReversed }) => {
-    setSelectValue((pre) => ({
-      ...pre,
-      isReversed,
-      colors: pre.colors.slice().reverse(),
-    }));
-  };
-
-  const onSelectValueChange = (color: string[]) => {
-    setSelectValue((pre) => ({ ...pre, colors: pre.isReversed ? color.slice().reverse() : color }));
-  };
 
   // 颜色列表
   const colorRangeList = useMemo(() => {
@@ -75,6 +58,15 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
 
     return list;
   }, [colorRanges, paletteConfig]);
+
+  const rangeSelectedName = useMemo(() => {
+    if (props.value.colors) {
+      const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
+      const selectRange = colorRanges.find((item) => item.colors.toString() === select.toString());
+      const name = getColorGroupByName(selectRange);
+      return name;
+    }
+  }, [props.value]);
 
   // 数量
   const colorRangeStepOptions = useMemo(() => {
@@ -93,6 +85,36 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     return rangeSteps;
   }, [paletteConfig.type, colorRanges]);
 
+  const onPaletteConfigChange = (config: Record<string | number, any>) => {
+    setPaletteConfig((pre) => ({ ...pre, ...config }));
+  };
+
+  const onIsReversedChange = ({ isReversed }) => {
+    props.onChange({
+      isReversed,
+      colors: selectedValue.colors.slice().reverse(),
+    });
+  };
+
+  const onSelectValueChange = (color: string[]) => {
+    props.onChange({
+      isReversed: selectedValue.isReversed,
+      colors: selectedValue.isReversed ? color.slice().reverse() : color,
+    });
+  };
+
+  useEffect(() => {
+    if (selectedValue.colors.length !== paletteConfig.steps && rangeSelectedName) {
+      const ranges = colorRangeList.find((item) => getColorGroupByName(item) === rangeSelectedName);
+      if (ranges) {
+        props.onChange({
+          isReversed: selectedValue.isReversed,
+          colors: selectedValue.isReversed ? ranges.colors.slice().reverse() : ranges.colors,
+        });
+      }
+    }
+  }, [colorRangeList, paletteConfig.steps]);
+
   // 配置项 list
   const paletteConfigList: PaletteConfigProps[] = useMemo(() => {
     return [
@@ -104,13 +126,13 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         config: {
           options: [
             { value: 'all', label: '全部' },
-            { value: 'sequential', label: '连续型' },
-            { value: 'singlehue', label: '纯色渐变' },
-            { value: 'qualitative', label: '定性的' },
-            { value: 'diverging', label: '离散型' },
+            { value: 'sequential', label: '连续' },
+            { value: 'singlehue', label: '单色' },
+            { value: 'qualitative', label: '分类' },
+            { value: 'diverging', label: '发散' },
           ],
         },
-        onChange: onTypeChange,
+        onChange: onPaletteConfigChange,
       },
       {
         id: 'steps',
@@ -120,7 +142,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         config: {
           options: colorRangeStepOptions,
         },
-        onChange: onStepsChange,
+        onChange: onPaletteConfigChange,
       },
       {
         id: 'isReversed',
@@ -132,33 +154,6 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       },
     ];
   }, [colorRangeStepOptions, paletteConfig.steps]);
-
-  useEffect(() => {
-    if (selectedValue.colors) {
-      const select = selectedValue.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors;
-      const selectRange = colorRangeList.find((item) => item.colors.toString() === select.toString());
-      const name = getColorGroupByName(selectRange);
-      setRangeName(name);
-    }
-  }, [selectedValue.colors]);
-
-  useEffect(() => {
-    if (selectedValue.colors.length !== paletteConfig.steps) {
-      const ranges = colorRangeList.find((item) => getColorGroupByName(item) === rangeName);
-      if (ranges) {
-        setSelectValue((pre) => ({
-          ...pre,
-          colors: pre.isReversed ? ranges.colors.slice().reverse() : ranges.colors,
-        }));
-      }
-    }
-  }, [paletteConfig.steps]);
-
-  useEffect(() => {
-    if (selectedValue) {
-      props.onChange({ ...selectedValue });
-    }
-  }, [selectedValue]);
 
   return (
     <Select

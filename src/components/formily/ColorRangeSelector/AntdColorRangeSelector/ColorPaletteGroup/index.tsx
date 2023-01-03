@@ -1,10 +1,11 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
 import classnames from 'classnames';
 import React from 'react';
+import type { ColorRange } from '../constants/color-ranges';
 import './index.less';
 
 export type ColorPaletteGroupProps = {
-  colorRange: string[][];
+  colorRange: ColorRange[];
   selectedValue: string[];
   isReversed: boolean;
   onChange: (color: string[]) => void;
@@ -33,7 +34,7 @@ const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
 
   return (
     <div className={prefixCls}>
-      {colorRange.map((colorArr: any, index: number) => {
+      {colorRange.map((colorArr: ColorRange, index: number) => {
         return (
           <ColorPaletteGroupItem
             key={index}
