@@ -78,21 +78,19 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
 
   // 数量
   const colorRangeStepOptions = useMemo(() => {
-    const rangeSteps: number[] = [];
+    const rangeSteps: { value: number; label: number }[] = [];
+    const list =
+      paletteConfig.type === 'all' ? colorRanges : colorRanges.filter((item) => item.type === paletteConfig.type);
 
-    if (paletteConfig.type === 'all') {
-      colorRanges.forEach((item) => {
-        rangeSteps.push(item.colors?.length);
-      });
-    } else {
-      colorRanges
-        .filter((item) => item.type === paletteConfig.type)
-        .map((item) => {
-          rangeSteps.push(item.colors?.length);
-        });
-    }
+    list.forEach((item) => {
+      if (rangeSteps.findIndex((_item) => _item.value === item.colors?.length) !== -1) {
+        return;
+      }
 
-    return [...new Set(rangeSteps)].map((item) => ({ value: item, label: item }));
+      rangeSteps.push({ value: item.colors?.length, label: item.colors?.length });
+    });
+
+    return rangeSteps;
   }, [paletteConfig.type, colorRanges]);
 
   // 配置项 list
