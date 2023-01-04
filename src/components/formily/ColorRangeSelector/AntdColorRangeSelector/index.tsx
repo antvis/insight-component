@@ -153,7 +153,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         onChange: onIsReversedChange,
       },
     ];
-  }, [colorRangeStepOptions, paletteConfig.steps]);
+  }, [colorRangeStepOptions, paletteConfig.steps, selectedValue]);
 
   return (
     <Select
