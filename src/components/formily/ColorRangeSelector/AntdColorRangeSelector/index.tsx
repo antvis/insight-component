@@ -113,7 +113,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         });
       }
     }
-  }, [colorRangeList, paletteConfig.steps]);
+  }, [colorRangeList]);
 
   // 配置项 list
   const paletteConfigList: PaletteConfigProps[] = useMemo(() => {
