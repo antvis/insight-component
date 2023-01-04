@@ -2,9 +2,9 @@ import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls'
 import { Select } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
-import { DEFAULTVALUE, getColorGroupByName } from './constants';
+import { DEFAULT_VALUE, getColorGroupByName } from './constants';
 import type { ColorRange } from './constants/color-ranges';
-import { COLORRANGES } from './constants/color-ranges';
+import { COLOR_RANGES } from './constants/color-ranges';
 import './index.less';
 import type { PaletteConfigProps } from './PaletteConfig';
 import PaletteConfigs from './PaletteConfig';
@@ -31,10 +31,10 @@ export interface AntdColorRangeSelectorProps {
 
 const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
-  const colorRanges = props.options && props.options.length ? props.options : COLORRANGES;
+  const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
 
   const selectedValue = useMemo(() => {
-    return props.value ?? DEFAULTVALUE;
+    return props.value ?? DEFAULT_VALUE;
   }, [props.value]);
 
   const [open, setOpen] = useState(false);
@@ -99,6 +99,9 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
       const selectRange = colorRanges.find((item) => item.colors.toString() === select.toString());
       const rangeSelectedName = getColorGroupByName(selectRange);
+      if (!rangeSelectedName) {
+        return;
+      }
       const ranges = colorRangeList.find((item) => getColorGroupByName(item) === rangeSelectedName);
       if (ranges) {
         props.onChange({

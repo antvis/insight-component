@@ -11,6 +11,8 @@ export type ColorRange = {
   colors: string[];
 };
 
+// Add colorbrewer color schemes (Data Science requirement)
+// See http://colorbrewer2.org/
 const colorBrewerMap = Object.entries(colorbrewer.schemeGroups).reduce(
   (accu: Record<string, string>, [type, palettes]: [string, string[]]) => ({
     ...accu,
@@ -25,7 +27,7 @@ const colorBrewerMap = Object.entries(colorbrewer.schemeGroups).reduce(
   {},
 );
 
-export const COLORRANGES: ColorRange[] = Object.entries(colorbrewer)
+export const COLOR_RANGES: ColorRange[] = Object.entries(colorbrewer)
   .filter(([keyName]) => keyName !== 'schemeGroups')
   .map(([keyName, colorScheme]: [string, Record<string, string[]>]) => {
     return Object.entries(colorScheme).map(([lenKey, colors]) => ({
@@ -36,3 +38,10 @@ export const COLORRANGES: ColorRange[] = Object.entries(colorbrewer)
     }));
   })
   .flat();
+
+// export const DEFAULT_COLOR_RANGE = colorRanges.find(({ name }) => name === 'ColorBrewer YlGn-6') || {
+//   name: 'Global Warming',
+//   type: 'sequential',
+//   category: 'LI',
+//   colors: ['#5A1846', '#900C3F', '#C70039', '#E3611C', '#F1920E', '#FFC300'],
+// };
