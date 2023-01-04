@@ -43,7 +43,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     steps: number;
   }>({
     type: 'all',
-    steps: selectedValue.colors.length ?? 0,
+    steps: selectedValue.colors.length ?? 6,
   });
 
   // 颜色列表
@@ -94,6 +94,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     });
   };
 
+  // steps 更新 => colorRangeList 更新，需自动更新选中相同类型的色带
   useEffect(() => {
     if (selectedValue.colors.length !== paletteConfig.steps) {
       const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
