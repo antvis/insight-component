@@ -59,15 +59,6 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     return list;
   }, [colorRanges, paletteConfig]);
 
-  const rangeSelectedName = useMemo(() => {
-    if (props.value.colors) {
-      const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
-      const selectRange = colorRanges.find((item) => item.colors.toString() === select.toString());
-      const name = getColorGroupByName(selectRange);
-      return name;
-    }
-  }, [props.value]);
-
   // 数量
   const colorRangeStepOptions = useMemo(() => {
     const rangeSteps: { value: number; label: number }[] = [];
@@ -104,7 +95,10 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   };
 
   useEffect(() => {
-    if (selectedValue.colors.length !== paletteConfig.steps && rangeSelectedName) {
+    if (selectedValue.colors.length !== paletteConfig.steps) {
+      const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
+      const selectRange = colorRanges.find((item) => item.colors.toString() === select.toString());
+      const rangeSelectedName = getColorGroupByName(selectRange);
       const ranges = colorRangeList.find((item) => getColorGroupByName(item) === rangeSelectedName);
       if (ranges) {
         props.onChange({

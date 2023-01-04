@@ -1,4 +1,4 @@
-import { COLOR_RANGES } from './color-ranges';
+import { COLORRANGES } from '../../../ColorRangeSelector/AntdColorRangeSelector/constants/color-ranges';
 
 // export const DEFAULT_RIBBON_LIST: string[][] = [
 //   [
@@ -146,6 +146,6 @@ import { COLOR_RANGES } from './color-ranges';
 //   ],
 // ];
 
-export const DEFAULT_RIBBON_LIST: string[][] = COLOR_RANGES.filter((item) => item.colors.length === 6).map(
+export const DEFAULT_RIBBON_LIST: string[][] = COLORRANGES.filter((item) => item.colors.length === 6).map(
   (item) => item.colors,
 );
