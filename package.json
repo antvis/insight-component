@@ -1,6 +1,6 @@
 {
   "name": "@antv/insight-component",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Components for GI & LI",
   "license": "MIT",
   "main": "lib/index.js",
