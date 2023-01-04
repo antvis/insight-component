@@ -1,0 +1,39 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-color-palette-group';
+
+.@{slider-prefix-cls} {
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20px;
+    padding: 4px;
+    cursor: pointer;
+
+    span {
+      height: 10px;
+    }
+
+    span:nth-child(1) {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    span:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+
+    &-selected {
+      background-color: @item-hover-bg;
+      border: @border-width-base @border-style-base @border-color-base;
+      border-radius: 4px;
+    }
+  }
+
+  &__item:hover {
+    background: @item-hover-bg;
+    border-radius: 4px;
+  }
+}

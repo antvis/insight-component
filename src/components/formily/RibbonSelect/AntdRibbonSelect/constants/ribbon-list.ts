@@ -1,4 +1,4 @@
-import { COLOR_RANGES } from './color-ranges';
+import { COLOR_RANGES } from '../../../ColorRangeSelector/AntdColorRangeSelector/constants/color-ranges';
 
 // export const DEFAULT_RIBBON_LIST: string[][] = [
 //   [

@@ -1,0 +1,21 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-palette-config-item';
+
+.@{slider-prefix-cls} {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  color: @text-color-secondary;
+  border-radius: 2px;
+
+  &__name {
+    width: 60px;
+  }
+
+  &__select {
+    width: 80px !important;
+  }
+}

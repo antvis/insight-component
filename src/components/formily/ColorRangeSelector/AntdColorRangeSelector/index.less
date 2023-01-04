@@ -1,0 +1,27 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-color-range-selector';
+
+.@{slider-prefix-cls} {
+  &__selection-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    span:nth-child(1) {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    span:last-child {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+  &__selection-panel-content {
+    max-height: 400px;
+    padding: 0 16px;
+    overflow-y: overlay;
+    border-top: 0;
+  }
+}
