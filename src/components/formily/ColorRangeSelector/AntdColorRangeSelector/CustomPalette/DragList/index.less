@@ -1,0 +1,15 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-drag-list';
+
+.@{slider-prefix-cls} {
+  &__item:hover &__item-icon {
+    opacity: 1;
+  }
+
+  &__item-icon {
+    cursor: move;
+    opacity: 0;
+  }
+}

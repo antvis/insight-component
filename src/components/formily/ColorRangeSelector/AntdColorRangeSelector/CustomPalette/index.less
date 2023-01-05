@@ -1,13 +1,16 @@
 @root-entry-name: 'default';
 @import (reference) '~antd/es/style/themes/index.less';
 
-@slider-prefix-cls: ~'@{ant-prefix}-formily-color-range-selector';
+@slider-prefix-cls: ~'@{ant-prefix}-formily-custom-palette';
 
 .@{slider-prefix-cls} {
+  height: 200px;
+
   &__selection-item {
     display: flex;
     align-items: center;
-    height: 100%;
+    height: 30px;
+    margin: 5px 0;
 
     span:nth-child(1) {
       border-top-left-radius: 4px;
@@ -20,10 +23,14 @@
     }
   }
 
-  &__selection-panel-content {
-    max-height: 400px;
-    padding: 0 16px;
-    overflow-y: overlay;
-    border-top: 0;
+  &__add-palette {
+    cursor: pointer;
+  }
+
+  &__btn {
+    margin-top: 10px;
+    padding: 10px 0;
+    text-align: right;
+    border-top: @border-width-base @border-style-base @border-color-base;
   }
 }

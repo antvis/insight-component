@@ -5,6 +5,7 @@ import ColorPaletteGroup from './ColorPaletteGroup';
 import { DEFAULT_VALUE, getColorGroupByName } from './constants';
 import type { ColorRange } from './constants/color-ranges';
 import { COLOR_RANGES } from './constants/color-ranges';
+import CustomPalette from './CustomPalette';
 import './index.less';
 import type { PaletteConfigProps } from './PaletteConfig';
 import PaletteConfigs from './PaletteConfig';
@@ -37,14 +38,17 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     return props.value ?? DEFAULT_VALUE;
   }, [props.value]);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
     steps: number;
   }>({
     type: 'all',
-    steps: selectedValue.colors.length ?? 6,
+    steps: selectedValue?.colors.length ?? 6,
   });
+
+  // 自定义调色板是否开启
+  const [customPaletteOpen, setCustomPaletteOpen] = useState(true);
 
   // 颜色列表
   const colorRangeList = useMemo(() => {
@@ -94,6 +98,14 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     });
   };
 
+  const onCustomPaletteChange = ({ customPalette }) => {
+    setCustomPaletteOpen(customPalette);
+  };
+
+  const onRangesChange = (value: string[]) => {
+    console.log(value);
+  };
+
   // steps 更新 => colorRangeList 更新，需自动更新选中相同类型的色带
   useEffect(() => {
     if (selectedValue.colors.length !== paletteConfig.steps) {
@@ -115,7 +127,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
 
   // 配置项 list
   const paletteConfigList: PaletteConfigProps[] = useMemo(() => {
-    return [
+    const list: PaletteConfigProps[] = [
       {
         id: 'type',
         label: '类型',
@@ -150,8 +162,20 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         config: {},
         onChange: onIsReversedChange,
       },
+      {
+        id: 'customPalette',
+        label: '自定义调色版',
+        type: 'switch',
+        value: customPaletteOpen,
+        config: {},
+        onChange: onCustomPaletteChange,
+      },
     ];
-  }, [colorRangeStepOptions, paletteConfig.steps, selectedValue]);
+    if (customPaletteOpen) {
+      return list.filter((item) => item.id === 'customPalette');
+    }
+    return list;
+  }, [colorRangeStepOptions, paletteConfig.steps, selectedValue, customPaletteOpen]);
 
   return (
     <Select
@@ -161,7 +185,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       dropdownRender={() => (
         <div
           className={`${prefixCls}__selection-panel-content`}
-          onMouseLeave={() => setOpen(false)}
+          // onMouseLeave={() => setOpen(false)}
           onClick={(e) => {
             e.preventDefault();
           }}
@@ -169,12 +193,17 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
           {paletteConfigList.map((item) => (
             <PaletteConfigs key={item.id} {...item} />
           ))}
-          <ColorPaletteGroup
-            colorRange={colorRangeList}
-            selectedValue={selectedValue.colors}
-            isReversed={selectedValue.isReversed}
-            onChange={(color) => onSelectValueChange(color)}
-          />
+
+          {!customPaletteOpen ? (
+            <ColorPaletteGroup
+              colorRange={colorRangeList}
+              selectedValue={selectedValue.colors}
+              isReversed={selectedValue.isReversed}
+              onChange={(color) => onSelectValueChange(color)}
+            />
+          ) : (
+            <CustomPalette ranges={selectedValue.colors} onChange={onRangesChange} />
+          )}
         </div>
       )}
       value={selectedValue.colors.toString()}

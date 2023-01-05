@@ -1,0 +1,41 @@
+@root-entry-name: 'default';
+@import (reference) '~antd/es/style/themes/index.less';
+
+@slider-prefix-cls: ~'@{ant-prefix}-formily-palette-item';
+
+.@{slider-prefix-cls} {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 8px;
+
+  &__drag-icon {
+    margin: 3px;
+  }
+
+  &__infor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    cursor: pointer;
+
+    &__color {
+      width: 32px;
+      height: 18px;
+    }
+
+    &__input {
+      flex: 1;
+      margin: 0 5px;
+    }
+
+    &__delete-icon {
+    }
+
+    &__delete-icon:hover {
+      color: #f00;
+    }
+  }
+}
