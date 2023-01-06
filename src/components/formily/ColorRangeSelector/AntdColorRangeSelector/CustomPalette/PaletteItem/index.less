@@ -21,6 +21,30 @@
     height: 30px;
     cursor: pointer;
 
+    &__popover {
+      .@{ant-prefix}-popover-inner-content {
+        padding: 0;
+      }
+    }
+
+    &__color-picker {
+      color: @text-color-secondary;
+      background-color: initial !important;
+
+      input {
+        background-color: initial;
+        box-shadow: @border-color-split 0 0 0 @border-width-base inset !important;
+      }
+
+      label {
+        color: inherit !important;
+      }
+
+      .flexbox-fix:last-child {
+        border-top: @border-color-split @border-style-base @border-width-base !important;
+      }
+    }
+
     &__color {
       width: 32px;
       height: 18px;

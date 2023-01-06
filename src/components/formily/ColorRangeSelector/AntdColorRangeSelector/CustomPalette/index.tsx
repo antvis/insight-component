@@ -11,13 +11,14 @@ export type CustomPaletteProps = {
   ranges: string[];
   className?: string;
   onChange: (value: string[]) => void;
+  onCancel: () => void;
 };
 
 // 自定义调色面板
 const CustomPalette = (props: CustomPaletteProps) => {
   const prefixCls = usePrefixCls('formily-custom-palette');
   const [paletteRanges, setPaletteRanges] = useState([]);
-  const { ranges, onChange } = props;
+  const { ranges, onChange, onCancel } = props;
 
   useEffect(() => {
     if (ranges.length) {
@@ -41,6 +42,16 @@ const CustomPalette = (props: CustomPaletteProps) => {
     setPaletteRanges(ranges);
   };
 
+  const deletePaletteRangeItem = (id: string) => {
+    setPaletteRanges((pre) => pre.filter((item) => item.id !== id));
+  };
+
+  const onSubmit = () => {
+    const ranges = paletteRanges.map((item) => item.value);
+    onChange(ranges);
+    onCancel();
+  };
+
   return (
     <div className={prefixCls}>
       <div className={`${prefixCls}__selection-item`}>
@@ -57,7 +68,14 @@ const CustomPalette = (props: CustomPaletteProps) => {
       </div>
       <div>
         <DragList items={paletteRanges} onDrag={onDragEnd} dragIcon={<HolderOutlined />}>
-          {(palette: any, icon: JSX.Element) => <PaletteItem dragIcon={icon} palette={palette.value} />}
+          {(palette: any, icon: JSX.Element) => (
+            <PaletteItem
+              key={palette.id}
+              dragIcon={icon}
+              palette={palette.value}
+              onDelete={() => deletePaletteRangeItem(palette.id)}
+            />
+          )}
         </DragList>
         <div>
           <span onClick={addPaletteRangeItem} className={`${prefixCls}__add-palette`}>
@@ -65,8 +83,12 @@ const CustomPalette = (props: CustomPaletteProps) => {
           </span>
         </div>
         <div className={`${prefixCls}__btn`}>
-          <Button type="text">取消</Button>
-          <Button type="text">确定</Button>
+          <Button type="text" onClick={onCancel}>
+            取消
+          </Button>
+          <Button type="text" onClick={onSubmit}>
+            确定
+          </Button>
         </div>
       </div>
     </div>

@@ -38,7 +38,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     return props.value ?? DEFAULT_VALUE;
   }, [props.value]);
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [paletteConfig, setPaletteConfig] = useState<{
     type: string;
     steps: number;
@@ -48,7 +48,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   });
 
   // 自定义调色板是否开启
-  const [customPaletteOpen, setCustomPaletteOpen] = useState(true);
+  const [customPaletteOpen, setCustomPaletteOpen] = useState(false);
 
   // 颜色列表
   const colorRangeList = useMemo(() => {
@@ -103,7 +103,10 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   };
 
   const onRangesChange = (value: string[]) => {
-    console.log(value);
+    props.onChange({
+      isReversed: selectedValue.isReversed,
+      colors: value,
+    });
   };
 
   // steps 更新 => colorRangeList 更新，需自动更新选中相同类型的色带
@@ -177,6 +180,34 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     return list;
   }, [colorRangeStepOptions, paletteConfig.steps, selectedValue, customPaletteOpen]);
 
+  const SelectOptions = useMemo(() => {
+    const isIn = colorRanges.find((item) => item.colors.toString() === props.value?.colors.toString());
+    const options = !isIn ? [...colorRanges, { colors: props.value.colors }] : colorRanges;
+    return (
+      <>
+        {options.map((item) => {
+          const colorList = selectedValue.isReversed ? item.colors.slice().reverse() : item.colors;
+          return (
+            <Select.Option key={colorList.toString()} value={colorList.toString()}>
+              <div className={`${prefixCls}__selection-item`}>
+                {colorList.map((color) => (
+                  <span
+                    key={color}
+                    style={{
+                      backgroundColor: color,
+                      height: '22px',
+                      width: `${100 / colorList.length}%`,
+                    }}
+                  />
+                ))}
+              </div>
+            </Select.Option>
+          );
+        })}
+      </>
+    );
+  }, [props.value, colorRanges]);
+
   return (
     <Select
       className={`${prefixCls}`}
@@ -202,31 +233,19 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
               onChange={(color) => onSelectValueChange(color)}
             />
           ) : (
-            <CustomPalette ranges={selectedValue.colors} onChange={onRangesChange} />
+            <CustomPalette
+              ranges={selectedValue.colors}
+              onChange={onRangesChange}
+              onCancel={() => {
+                onCustomPaletteChange({ customPalette: false });
+              }}
+            />
           )}
         </div>
       )}
       value={selectedValue.colors.toString()}
     >
-      {colorRanges.map((item) => {
-        const colorList = selectedValue.isReversed ? item.colors.slice().reverse() : item.colors;
-        return (
-          <Select.Option key={colorList.toString()} value={colorList.toString()}>
-            <div className={`${prefixCls}__selection-item`}>
-              {colorList.map((color) => (
-                <span
-                  key={color}
-                  style={{
-                    backgroundColor: color,
-                    height: '22px',
-                    width: `${100 / colorList.length}%`,
-                  }}
-                />
-              ))}
-            </div>
-          </Select.Option>
-        );
-      })}
+      {SelectOptions}
     </Select>
   );
 };

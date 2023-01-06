@@ -33,7 +33,7 @@ const PaletteConfig = (props: PaletteConfigProps) => {
         />
       )}
       {type === 'switch' && (
-        <Switch defaultChecked={defaultValue as boolean} onChange={(value) => onChange({ [id]: value })} />
+        <Switch checked={defaultValue as boolean} onChange={(value) => onChange({ [id]: value })} />
       )}
     </div>
   );
