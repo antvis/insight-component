@@ -181,7 +181,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       value={selectedValue.colors.toString()}
     >
       {[selectedValue].map((item) => {
-        const colorList = props.value.isReversed ? item.colors.slice().reverse() : item.colors;
+        const colorList = item.colors;
         return (
           <Select.Option key={colorList.toString()} value={colorList.toString()}>
             <div className={`${prefixCls}__selection-item`}>
