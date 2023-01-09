@@ -43,7 +43,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     steps: number;
   }>({
     type: 'all',
-    steps: selectedValue.colors.length ?? 6,
+    steps: selectedValue?.colors.length ?? 6,
   });
 
   // 颜色列表
@@ -153,6 +153,36 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     ];
   }, [colorRangeStepOptions, paletteConfig.steps, selectedValue]);
 
+  const SelectOptions = useMemo(() => {
+    const isIn = colorRanges.find((item) => item.colors.toString() === props.value?.colors.toString());
+    const options = !isIn
+      ? [...colorRanges, { colors: props.value.colors }, { colors: props.value.colors.slice().reverse() }]
+      : colorRanges;
+    return (
+      <>
+        {options.map((item) => {
+          const colorList = props.value.isReversed ? item.colors.slice().reverse() : item.colors;
+          return (
+            <Select.Option key={colorList.toString()} value={colorList.toString()}>
+              <div className={`${prefixCls}__selection-item`}>
+                {colorList.map((color) => (
+                  <span
+                    key={color}
+                    style={{
+                      backgroundColor: color,
+                      height: '22px',
+                      width: `${100 / colorList.length}%`,
+                    }}
+                  />
+                ))}
+              </div>
+            </Select.Option>
+          );
+        })}
+      </>
+    );
+  }, [props.value, colorRanges]);
+
   return (
     <Select
       className={`${prefixCls}`}
@@ -179,25 +209,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       )}
       value={selectedValue.colors.toString()}
     >
-      {colorRanges.map((item) => {
-        const colorList = selectedValue.isReversed ? item.colors.slice().reverse() : item.colors;
-        return (
-          <Select.Option key={colorList.toString()} value={colorList.toString()}>
-            <div className={`${prefixCls}__selection-item`}>
-              {colorList.map((color) => (
-                <span
-                  key={color}
-                  style={{
-                    backgroundColor: color,
-                    height: '22px',
-                    width: `${100 / colorList.length}%`,
-                  }}
-                />
-              ))}
-            </div>
-          </Select.Option>
-        );
-      })}
+      {SelectOptions}
     </Select>
   );
 };
