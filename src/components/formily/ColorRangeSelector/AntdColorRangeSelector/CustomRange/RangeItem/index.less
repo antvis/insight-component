@@ -1,13 +1,13 @@
 @root-entry-name: 'default';
 @import (reference) '~antd/es/style/themes/index.less';
 
-@slider-prefix-cls: ~'@{ant-prefix}-formily-palette-item';
+@slider-prefix-cls: ~'@{ant-prefix}-formily-range-item';
 
 .@{slider-prefix-cls} {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  padding: 0 8px;
+  padding: 5px 8px;
 
   &__drag-icon {
     margin: 3px;
@@ -22,6 +22,8 @@
     cursor: pointer;
 
     &__popover {
+      z-index: 9999 !important;
+
       .@{ant-prefix}-popover-inner-content {
         padding: 0;
       }
@@ -53,13 +55,24 @@
     &__input {
       flex: 1;
       margin: 0 5px;
+      border: 1px solid rgba(0, 0, 0, 0);
+      cursor: pointer;
+
+      input {
+        color: @text-color-secondary;
+      }
     }
 
-    &__delete-icon {
+    &__input:hover {
+      border-color: @text-color-secondary;
     }
 
     &__delete-icon:hover {
-      color: #f00;
+      color: #1890ff;
     }
   }
+}
+
+.@{slider-prefix-cls}:hover {
+  background: @item-hover-bg;
 }

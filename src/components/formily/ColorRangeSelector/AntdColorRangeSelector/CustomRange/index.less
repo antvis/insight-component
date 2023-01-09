@@ -1,10 +1,10 @@
 @root-entry-name: 'default';
 @import (reference) '~antd/es/style/themes/index.less';
 
-@slider-prefix-cls: ~'@{ant-prefix}-formily-custom-palette';
+@slider-prefix-cls: ~'@{ant-prefix}-formily-custom-range';
 
 .@{slider-prefix-cls} {
-  height: 200px;
+  color: @text-color-secondary;
 
   &__selection-item {
     display: flex;
@@ -23,14 +23,27 @@
     }
   }
 
-  &__add-palette {
+  &__add-range-item {
+    padding-left: 12px;
     cursor: pointer;
   }
 
   &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: right;
     margin-top: 10px;
     padding: 10px 0;
     text-align: right;
     border-top: @border-width-base @border-style-base @border-color-base;
+
+    span {
+      margin-left: 20px;
+      cursor: pointer;
+    }
+
+    span:hover {
+      color: #1890ff;
+    }
   }
 }

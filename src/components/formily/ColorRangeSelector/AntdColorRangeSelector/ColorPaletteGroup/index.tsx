@@ -22,7 +22,7 @@ const ColorPaletteGroup = (props: ColorPaletteGroupProps) => {
       <div
         {...prop}
         className={classnames(`${prefixCls}__item`, {
-          [`${prefixCls}__item-selected`]: color.toString() === selectedValue.toString(),
+          [`${prefixCls}__item--selected`]: color.toString() === selectedValue.toString(),
         })}
       >
         {color.map((colorItem: string, index) => (

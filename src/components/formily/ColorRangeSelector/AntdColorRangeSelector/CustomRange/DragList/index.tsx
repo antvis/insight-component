@@ -7,13 +7,10 @@ import './index.less';
 
 interface DragListProps<P> {
   itemStyle?: React.CSSProperties | ((dataset: P) => React.CSSProperties);
-  itemClassName?: string | ((item: P) => string);
   dragIcon?: JSX.Element;
   items: Record<string, any>[];
-  onItemClick?: (item: P) => void;
   onDrag: (newItems: any[]) => void;
   children: (item: P, icon: JSX.Element) => JSX.Element;
-  keyField?: string;
 }
 
 function DragList<P extends Record<string, any>>({ children, itemStyle, items, onDrag, dragIcon }: DragListProps<P>) {

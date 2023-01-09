@@ -5,7 +5,7 @@ import ColorPaletteGroup from './ColorPaletteGroup';
 import { DEFAULT_VALUE, getColorGroupByName } from './constants';
 import type { ColorRange } from './constants/color-ranges';
 import { COLOR_RANGES } from './constants/color-ranges';
-import CustomPalette from './CustomPalette';
+import CustomRange from './CustomRange';
 import './index.less';
 import type { PaletteConfigProps } from './PaletteConfig';
 import PaletteConfigs from './PaletteConfig';
@@ -167,7 +167,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       },
       {
         id: 'customPalette',
-        label: '自定义调色版',
+        label: '自定义',
         type: 'switch',
         value: customPaletteOpen,
         config: {},
@@ -182,11 +182,13 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
 
   const SelectOptions = useMemo(() => {
     const isIn = colorRanges.find((item) => item.colors.toString() === props.value?.colors.toString());
-    const options = !isIn ? [...colorRanges, { colors: props.value.colors }] : colorRanges;
+    const options = !isIn
+      ? [...colorRanges, { colors: props.value.colors }, { colors: props.value.colors.slice().reverse() }]
+      : colorRanges;
     return (
       <>
         {options.map((item) => {
-          const colorList = selectedValue.isReversed ? item.colors.slice().reverse() : item.colors;
+          const colorList = props.value.isReversed ? item.colors.slice().reverse() : item.colors;
           return (
             <Select.Option key={colorList.toString()} value={colorList.toString()}>
               <div className={`${prefixCls}__selection-item`}>
@@ -216,7 +218,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       dropdownRender={() => (
         <div
           className={`${prefixCls}__selection-panel-content`}
-          // onMouseLeave={() => setOpen(false)}
+          onMouseLeave={() => setOpen(false)}
           onClick={(e) => {
             e.preventDefault();
           }}
@@ -233,7 +235,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
               onChange={(color) => onSelectValueChange(color)}
             />
           ) : (
-            <CustomPalette
+            <CustomRange
               ranges={selectedValue.colors}
               onChange={onRangesChange}
               onCancel={() => {

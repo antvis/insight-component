@@ -5,9 +5,10 @@ import React from 'react';
 import { SketchPicker } from 'react-color';
 import './index.less';
 
-type PaletteItemProps = {
-  palette: any;
+type RangeItemProps = {
+  color: string;
   onDelete: () => void;
+  onChange: (color: string) => void;
   dragIcon?: JSX.Element;
 };
 
@@ -25,8 +26,8 @@ const Preset_Colors = [
   '#A9ABB1',
 ];
 
-const PaletteItem = ({ palette, onDelete, dragIcon }: PaletteItemProps) => {
-  const prefixCls = usePrefixCls('formily-palette-item');
+const RangeItem = ({ color, onDelete, onChange, dragIcon }: RangeItemProps) => {
+  const prefixCls = usePrefixCls('formily-range-item');
 
   return (
     <div className={`${prefixCls}`}>
@@ -39,20 +40,20 @@ const PaletteItem = ({ palette, onDelete, dragIcon }: PaletteItemProps) => {
           content={
             <SketchPicker
               className={`${prefixCls}__infor__color-picker`}
-              color={palette ? palette : Preset_Colors[0]}
+              color={color ? color : Preset_Colors[0]}
               disableAlpha
               onChange={(color) => {
-                console.log(color, '测试');
+                onChange(color.hex);
               }}
               presetColors={Preset_Colors}
             />
           }
         >
-          <div className={`${prefixCls}__infor__color`} style={{ background: palette }} />
+          <div className={`${prefixCls}__infor__color`} style={{ background: color }} />
         </Popover>
 
         <div className={`${prefixCls}__infor__input`}>
-          <Input value={palette} size="small" bordered={false} />
+          <Input bordered={false} value={color} size="small" onChange={(e) => onChange(e.target.value)} />
         </div>
         <div className={`${prefixCls}__infor__delete-icon`} onClick={onDelete}>
           <DeleteOutlined />
@@ -62,4 +63,4 @@ const PaletteItem = ({ palette, onDelete, dragIcon }: PaletteItemProps) => {
   );
 };
 
-export default PaletteItem;
+export default RangeItem;
