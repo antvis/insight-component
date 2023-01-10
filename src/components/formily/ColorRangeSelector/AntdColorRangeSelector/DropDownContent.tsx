@@ -19,7 +19,7 @@ export interface DropDownContentProps {
   /**
    * 选择发生改变时
    */
-  onChange?: (val: any) => void;
+  onChange?: (val: valueProps) => void;
 }
 
 const DropDownContent = (props: DropDownContentProps) => {
