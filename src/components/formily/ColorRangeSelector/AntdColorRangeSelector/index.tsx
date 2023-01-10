@@ -1,5 +1,6 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
 import { Select } from 'antd';
+import { isUndefined } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
 import { DEFAULT_VALUE, getColorGroupByName } from './constants';
@@ -35,7 +36,11 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
 
   const selectedValue = useMemo(() => {
-    return props.value ?? DEFAULT_VALUE;
+    if (isUndefined(props.value) || isUndefined(props.value.colors)) {
+      return DEFAULT_VALUE;
+    }
+
+    return props.value;
   }, [props.value]);
 
   const [open, setOpen] = useState(false);
@@ -44,7 +49,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     steps: number;
   }>({
     type: 'all',
-    steps: selectedValue?.colors.length ?? 6,
+    steps: selectedValue.colors.length || 6,
   });
 
   // 自定义调色板是否开启
@@ -112,8 +117,8 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   // steps 更新 => colorRangeList 更新，需自动更新选中相同类型的色带
   useEffect(() => {
     if (selectedValue.colors.length !== paletteConfig.steps) {
-      const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
-      const selectRange = colorRanges.find((item) => item.colors.toString() === select.toString());
+      const selectColors = selectedValue.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors;
+      const selectRange = colorRanges.find((item) => item.colors.toString() === selectColors.toString());
       const rangeSelectedName = getColorGroupByName(selectRange);
       if (!rangeSelectedName) {
         return;
@@ -126,6 +131,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colorRangeList]);
 
   // 配置项 list
@@ -180,36 +186,6 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     return list;
   }, [colorRangeStepOptions, paletteConfig.steps, selectedValue, customPaletteOpen]);
 
-  const SelectOptions = useMemo(() => {
-    const isIn = colorRanges.find((item) => item.colors.toString() === props.value?.colors.toString());
-    const options = !isIn
-      ? [...colorRanges, { colors: props.value.colors }, { colors: props.value.colors.slice().reverse() }]
-      : colorRanges;
-    return (
-      <>
-        {options.map((item) => {
-          const colorList = props.value.isReversed ? item.colors.slice().reverse() : item.colors;
-          return (
-            <Select.Option key={colorList.toString()} value={colorList.toString()}>
-              <div className={`${prefixCls}__selection-item`}>
-                {colorList.map((color) => (
-                  <span
-                    key={color}
-                    style={{
-                      backgroundColor: color,
-                      height: '22px',
-                      width: `${100 / colorList.length}%`,
-                    }}
-                  />
-                ))}
-              </div>
-            </Select.Option>
-          );
-        })}
-      </>
-    );
-  }, [props.value, colorRanges]);
-
   return (
     <Select
       className={`${prefixCls}`}
@@ -247,7 +223,27 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
       )}
       value={selectedValue.colors.toString()}
     >
-      {SelectOptions}
+      {[selectedValue].map((item) => {
+        const colorList = item.colors;
+        if (colorList.length === 0) return;
+
+        return (
+          <Select.Option key={colorList.toString()} value={colorList.toString()}>
+            <div className={`${prefixCls}__selection-item`}>
+              {colorList.map((color) => (
+                <span
+                  key={color}
+                  style={{
+                    backgroundColor: color,
+                    height: '22px',
+                    width: `${100 / colorList.length}%`,
+                  }}
+                />
+              ))}
+            </div>
+          </Select.Option>
+        );
+      })}
     </Select>
   );
 };
