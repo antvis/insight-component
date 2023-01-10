@@ -2,6 +2,7 @@ import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls'
 import { message, Select } from 'antd';
 import { isEmpty } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
+import { isArr } from '_@formily_shared@2.2.16@@formily/shared';
 import ColorPaletteGroup from './ColorPaletteGroup';
 import { DEFAULT_VALUE, getColorGroupByName } from './constants';
 import type { ColorRange } from './constants/color-ranges';
@@ -34,17 +35,20 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
   const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
 
+  console.log(isArr(props.value.colors), 'sdfkj');
+
   const selectedValue = useMemo(() => {
     if (typeof props.value !== 'object') {
       message.error('入参错误');
       return DEFAULT_VALUE;
     }
-    if (props.value.colors) {
-      return props.value ?? DEFAULT_VALUE;
+
+    if (isEmpty(props.value)) {
+      return DEFAULT_VALUE;
     }
 
     return {
-      colors: [],
+      colors: isArr(props.value.colors) ? props.value.colors : [],
       isReversed: props.value.isReversed || false,
     };
   }, [props.value]);
