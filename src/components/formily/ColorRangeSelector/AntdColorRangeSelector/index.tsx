@@ -35,8 +35,6 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const prefixCls = usePrefixCls('formily-color-range-selector');
   const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
 
-  console.log(isArr(props.value.colors), 'sdfkj');
-
   const selectedValue = useMemo(() => {
     if (typeof props.value !== 'object') {
       message.error('入参错误');
