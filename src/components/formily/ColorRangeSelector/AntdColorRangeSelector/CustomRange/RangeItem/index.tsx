@@ -26,7 +26,7 @@ const Preset_Colors = [
   '#A9ABB1',
 ];
 
-const RangeItem = ({ color, onDelete, onChange, dragIcon }: RangeItemProps) => {
+const RangeItem = ({ color: defaultValue, onDelete, onChange, dragIcon }: RangeItemProps) => {
   const prefixCls = usePrefixCls('formily-range-item');
 
   return (
@@ -40,7 +40,7 @@ const RangeItem = ({ color, onDelete, onChange, dragIcon }: RangeItemProps) => {
           content={
             <SketchPicker
               className={`${prefixCls}__infor__color-picker`}
-              color={color ? color : Preset_Colors[0]}
+              color={defaultValue ? defaultValue : Preset_Colors[0]}
               disableAlpha
               onChange={(color) => {
                 onChange(color.hex);
@@ -49,11 +49,11 @@ const RangeItem = ({ color, onDelete, onChange, dragIcon }: RangeItemProps) => {
             />
           }
         >
-          <div className={`${prefixCls}__infor__color`} style={{ background: color }} />
+          <div className={`${prefixCls}__infor__color`} style={{ background: defaultValue }} />
         </Popover>
 
         <div className={`${prefixCls}__infor__input`}>
-          <Input bordered={false} value={color} size="small" onChange={(e) => onChange(e.target.value)} />
+          <Input bordered={false} value={defaultValue} size="small" onChange={(e) => onChange(e.target.value)} />
         </div>
         <div className={`${prefixCls}__infor__delete-icon`} onClick={onDelete}>
           <DeleteOutlined />

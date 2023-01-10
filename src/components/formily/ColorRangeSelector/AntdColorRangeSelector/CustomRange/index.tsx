@@ -14,7 +14,7 @@ export type CustomRangeProps = {
   className?: string;
 };
 
-type RangeItem = {
+type RangeItemType = {
   id: string;
   value: string;
 };
@@ -22,7 +22,7 @@ type RangeItem = {
 const CustomRange = (props: CustomRangeProps) => {
   const { ranges: defaultRanges, onChange, onCancel, className } = props;
   const prefixCls = usePrefixCls('formily-custom-range');
-  const [ranges, setRanges] = useState<RangeItem[]>([]);
+  const [ranges, setRanges] = useState<RangeItemType[]>([]);
 
   useEffect(() => {
     if (defaultRanges.length) {
@@ -36,13 +36,13 @@ const CustomRange = (props: CustomRangeProps) => {
     }
   }, [defaultRanges]);
 
-  const onDragEnd = (newLayerList: RangeItem[]) => {
+  const onDragEnd = (newLayerList: RangeItemType[]) => {
     setRanges(newLayerList);
   };
 
   const addPaletteRangeItem = () => {
-    const addItem: RangeItem = { id: uniqueId(), value: ranges[ranges.length - 1].value };
-    const list: RangeItem[] = [...ranges, addItem];
+    const addItem: RangeItemType = { id: uniqueId(), value: ranges[ranges.length - 1].value };
+    const list: RangeItemType[] = [...ranges, addItem];
     setRanges(list);
   };
 
@@ -50,7 +50,7 @@ const CustomRange = (props: CustomRangeProps) => {
     setRanges((pre) => pre.filter((item) => item.id !== id));
   };
 
-  const onChangePaletteRangeItem = (color: RangeItem) => {
+  const onChangePaletteRangeItem = (color: RangeItemType) => {
     const list = ranges.map((item) => {
       if (item.id === color.id) {
         return color;
@@ -82,7 +82,7 @@ const CustomRange = (props: CustomRangeProps) => {
       </div>
 
       <DragList items={ranges} onDrag={onDragEnd} dragIcon={<HolderOutlined />}>
-        {(rangeItem: RangeItem, icon: JSX.Element) => (
+        {(rangeItem: RangeItemType, icon: JSX.Element) => (
           <RangeItem
             key={rangeItem.id}
             dragIcon={icon}
