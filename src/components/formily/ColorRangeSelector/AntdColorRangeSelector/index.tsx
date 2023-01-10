@@ -1,6 +1,6 @@
 import { usePrefixCls } from '@formily/antd/esm/__builtins__/hooks/usePrefixCls';
-import { message, Select } from 'antd';
-import { isArray, isEmpty } from 'lodash-es';
+import { Select } from 'antd';
+import { isUndefined } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import ColorPaletteGroup from './ColorPaletteGroup';
 import { DEFAULT_VALUE, getColorGroupByName } from './constants';
@@ -35,19 +35,11 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
 
   const selectedValue = useMemo(() => {
-    if (typeof props.value !== 'object') {
-      message.error('入参错误');
+    if (isUndefined(props.value) || isUndefined(props.value.colors)) {
       return DEFAULT_VALUE;
     }
 
-    if (isEmpty(props.value)) {
-      return DEFAULT_VALUE;
-    }
-
-    return {
-      colors: isArray(props.value.colors) ? props.value.colors : [],
-      isReversed: props.value.isReversed || false,
-    };
+    return props.value;
   }, [props.value]);
 
   const [open, setOpen] = useState(false);
@@ -56,7 +48,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     steps: number;
   }>({
     type: 'all',
-    steps: selectedValue.colors.length > 0 ? selectedValue.colors.length : 6,
+    steps: selectedValue.colors.length || 6,
   });
 
   // 颜色列表
@@ -110,8 +102,8 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   // steps 更新 => colorRangeList 更新，需自动更新选中相同类型的色带
   useEffect(() => {
     if (selectedValue.colors.length !== paletteConfig.steps) {
-      const select = props.value.isReversed ? props.value.colors.slice().reverse() : props.value.colors;
-      const selectRange = colorRanges.find((item) => item.colors.toString() === select?.toString());
+      const selectColors = selectedValue.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors;
+      const selectRange = colorRanges.find((item) => item.colors.toString() === selectColors.toString());
       const rangeSelectedName = getColorGroupByName(selectRange);
       if (!rangeSelectedName) {
         return;
@@ -195,9 +187,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     >
       {[selectedValue].map((item) => {
         const colorList = item.colors;
-        if (isEmpty(colorList)) {
-          return;
-        }
+        if (colorList.length === 0) return;
 
         return (
           <Select.Option key={colorList.toString()} value={colorList.toString()}>
