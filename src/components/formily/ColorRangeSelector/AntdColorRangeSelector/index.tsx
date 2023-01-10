@@ -43,7 +43,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
     steps: number;
   }>({
     type: 'all',
-    steps: selectedValue?.colors.length ?? 6,
+    steps: selectedValue.colors.length ?? 6,
   });
 
   // 颜色列表
