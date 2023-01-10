@@ -34,7 +34,7 @@ const AntdColorRangeSelector = (props: AntdColorRangeSelectorProps) => {
   const colorRanges = props.options && props.options.length ? props.options : COLOR_RANGES;
 
   const selectedValue = useMemo(() => {
-    return props.value?.colors.length > 0 ? props.value : DEFAULT_VALUE;
+    return props.value?.colors?.length > 0 ? props.value : DEFAULT_VALUE;
   }, [props.value]);
 
   const [open, setOpen] = useState(false);
