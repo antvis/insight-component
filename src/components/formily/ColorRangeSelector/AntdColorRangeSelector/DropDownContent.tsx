@@ -101,9 +101,8 @@ const DropDownContent = (props: DropDownContentProps) => {
       const selectColors = selectedValue.isReversed ? selectedValue.colors.slice().reverse() : selectedValue.colors;
       const selectRange = colorRanges.find((item) => item.colors.toString() === selectColors.toString());
       const rangeSelectedName = getColorGroupByName(selectRange);
-      if (!rangeSelectedName) {
-        return;
-      }
+      if (!rangeSelectedName) return;
+
       const ranges = colorRangeList.find((item) => getColorGroupByName(item) === rangeSelectedName);
       if (ranges) {
         props.onChange({
